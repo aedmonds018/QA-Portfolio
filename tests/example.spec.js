@@ -53,7 +53,6 @@ test("login form accepts user input", async function({ page }) {
     await loginPage.passwordInput.fill("secret_sauce");
     await expect(loginPage.passwordInput).toHaveValue("secret_sauce");
 
-    await loginPage.passwordInput.clear();
     await loginPage.passwordInput.fill("new_password_123");
     await expect(loginPage.passwordInput).toHaveValue("new_password_123");
 });
@@ -121,4 +120,14 @@ test("no input", async function ({ page }) {
 
     await expectLoginError(loginPage, "Epic sadface: Username is required")
 });
+
+test("login form supports keyboard navigation", async function({ page }) {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.usernameInput.focus();
+
+    await page.keyboard.press("Tab");
+
+    await expect(loginPage.passwordInput).toBeFocused();
+})
 });
