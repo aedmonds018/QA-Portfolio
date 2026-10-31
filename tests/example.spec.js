@@ -46,12 +46,16 @@ test("login form accepts user input", async function({ page }) {
 
     await loginPage.usernameInput.fill("standard_user");
     
-await expect(loginPage.usernameInput).toHaveValue("standard_user");
-await loginPage.usernameInput.clear();
-await expect(loginPage.usernameInput).toHaveValue("");
+    await expect(loginPage.usernameInput).toHaveValue("standard_user");
+    await loginPage.usernameInput.clear();
+    await expect(loginPage.usernameInput).toHaveValue("");
 
-await loginPage.passwordInput.fill("secret_sauce");
-await expect(loginPage.passwordInput).toHaveValue("secret_sauce"); 
+    await loginPage.passwordInput.fill("secret_sauce");
+    await expect(loginPage.passwordInput).toHaveValue("secret_sauce");
+
+    await loginPage.passwordInput.clear();
+    await loginPage.passwordInput.fill("new_password_123");
+    await expect(loginPage.passwordInput).toHaveValue("new_password_123");
 });
 
 test("successful login navigates to products", async function({ page }) {
