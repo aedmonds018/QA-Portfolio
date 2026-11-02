@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>JavaScript Arrays</h1>
+<p>A JavaScript array can be displayed by referring to the array name.</p>
+<p id="report"></p>
+
+<label for="userIndex">User Index:</label>
+<input type="number" id="userIndex">
+<button id="change-btn">Change User</button>
+
+<label for="newName">New Name</label>
+<input type="text" id="newName">
+
+<label for="newAge">New Age</label>
+<input type="number" id="newAge">
+
+<label for="newEmail">New Email</label>
+<input type="text" id="newEmail">
+
+<script>
+
+const products = [
+    { name: "Laptop", price: 1200, quantity: 2, active: true },
+    { name: "Mouse", price: 25, quantity: 5, active: true },
+    { name: "Keyboard", price: 75, quantity: 3, active: false },
+    { name: "Monitor", price: 300, quantity: 2, active: true },
+    { name: "Headphones", price: 150, quantity: 1, active: false }
+];
+function getActiveProducts() {
+    return products.filter(function(product) {
+        return product.active === true;
+    });
+}
+function getProductNames(activeProducts) {
+    return activeProducts.map(function(product) {
+        return product.name;
+    });
+}
+function getInventoryValue(activeProducts) {
+    return activeProducts.map(function(product) {
+        return product.price * product.quantity
+    });
+}
+function getRevenue(products) {
+    return products.reduce(function(total, revenue) {
+        return revenue + total;
+    }, 0);
+}
+function getQuantities(products) {
+    return products.map(function(product) {
+        return product.quantity;
+    })
+}
+function getTotalQuantity(products) {
+    return products.reduce(function(total, quantity) {
+        return quantity + total;
+    }, 0)
+}
+
+function displayReport() {
+    const report = document.getElementById("report");
+    const activeProducts = getActiveProducts();
+const activeProductNames = getProductNames(activeProducts);
+    const activeQuantities = getQuantities(activeProducts);
+    const totalActiveQuantity = getTotalQuantity(activeQuantities);
+
+    const activeInventoryValues = getInventoryValue(activeProducts);
+    const totalActiveInventoryValue = getRevenue(activeInventoryValues);
+
+    console.log("Total Quantity: " + totalActiveQuantity);
+    console.log("Active Products: " + activeProductNames.join(" , "));
+    console.log("Total Inventory Value: " + totalActiveInventoryValue);
+
+report.innerHTML = `Active Products: ${activeProductNames.join(", ")}<br>
+Total Quantity: ${totalActiveQuantity}<br>
+Total Inventory Value: ${totalActiveInventoryValue}`;
+}
+
+displayReport();
+
+for (const product of products) {
+    if (product.price >= 100) {
+    console.log(product.name);
+}
+}
+
+const productz = ["Laptopz", "Mousez", "Keyboardz"];
+
+const [first, second, third] = productz;
+
+console.log(first);
+console.log(second);
+console.log(third);
+
+const user = {
+    name: "Alex",
+    age: 30,
+    role: "QA"
+};
+
+let { name, age, role } = user;
+name = "Sarah";
+age = 25;
+role = "Marketing";
+console.log(name);
+console.log(age);
+console.log(role);
+
+const purchases = [
+    { names: "Computer", prices: 1200 },
+    { names: "Headphones", prices: 25 },
+    { names: "Camera", prices: 300 }
+];
+
+function addNumbers(...numbers) {
+    let total = 0;
+
+    for (const number of numbers) {
+        total += number;
+    }
+
+    return total;
+}
+
+console.log(addNumbers(30, 30));
+</script>
+
+</body>
+</html>

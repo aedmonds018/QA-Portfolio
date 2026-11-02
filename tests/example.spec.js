@@ -129,5 +129,28 @@ test("login form supports keyboard navigation", async function({ page }) {
     await page.keyboard.press("Tab");
 
     await expect(loginPage.passwordInput).toBeFocused();
-})
+
+    await page.keyboard.press("Tab");
+    await expect(loginPage.loginButton).toBeFocused();
+});
+
+test("login button supports keyboard navigation", async function({ page }) {
+    const loginPage = new LoginPage(page);
+
+        await loginPage.usernameInput.fill(users.standard.username);
+        await loginPage.passwordInput.fill(users.standard.password);
+
+        await loginPage.usernameInput.focus();
+
+        await page.keyboard.press("Tab");
+        await expect(loginPage.passwordInput).toBeFocused();
+
+        await page.keyboard.press("Tab");
+        await expect(loginPage.loginButton).toBeFocused();
+
+        await page.keyboard.press("Enter");
+
+
+        await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
+});
 });
