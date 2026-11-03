@@ -66,6 +66,51 @@ test("successful login navigates to products", async function({ page }) {
 
     await expect(page.getByText("Products")).toBeVisible();
 });
+test("login form supports keyboard navigation", async function({ page }) {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.usernameInput.focus();
+
+    await page.keyboard.press("Tab");
+
+    await expect(loginPage.passwordInput).toBeFocused();
+
+    await page.keyboard.press("Tab");
+    await expect(loginPage.loginButton).toBeFocused();
+});
+test("login button submits with Enter", async function({ page }) {
+    const loginPage = new LoginPage(page);
+
+        await loginPage.usernameInput.fill(users.standard.username);
+        await loginPage.passwordInput.fill(users.standard.password);
+
+        await loginPage.usernameInput.focus();
+
+        await page.keyboard.press("Tab");
+        await expect(loginPage.passwordInput).toBeFocused();
+
+        await page.keyboard.press("Tab");
+        await expect(loginPage.loginButton).toBeFocused();
+
+        await page.keyboard.press("Enter");
+
+
+        await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
+});
+test("login submits when pressing Enter in password field", async function({ page }) {        
+        const loginPage = new LoginPage(page);
+        
+            await loginPage.usernameInput.fill(users.standard.username);
+            await loginPage.passwordInput.fill(users.standard.password);
+
+            await loginPage.passwordInput.focus();
+
+            await page.keyboard.press("Enter");
+
+
+            await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
+
+});
 });
 
 test.describe("Failed Login", function() {
@@ -119,38 +164,5 @@ test("no input", async function ({ page }) {
     await loginPage.login("", "");
 
     await expectLoginError(loginPage, "Epic sadface: Username is required")
-});
-
-test("login form supports keyboard navigation", async function({ page }) {
-    const loginPage = new LoginPage(page);
-
-    await loginPage.usernameInput.focus();
-
-    await page.keyboard.press("Tab");
-
-    await expect(loginPage.passwordInput).toBeFocused();
-
-    await page.keyboard.press("Tab");
-    await expect(loginPage.loginButton).toBeFocused();
-});
-
-test("login button supports keyboard navigation", async function({ page }) {
-    const loginPage = new LoginPage(page);
-
-        await loginPage.usernameInput.fill(users.standard.username);
-        await loginPage.passwordInput.fill(users.standard.password);
-
-        await loginPage.usernameInput.focus();
-
-        await page.keyboard.press("Tab");
-        await expect(loginPage.passwordInput).toBeFocused();
-
-        await page.keyboard.press("Tab");
-        await expect(loginPage.loginButton).toBeFocused();
-
-        await page.keyboard.press("Enter");
-
-
-        await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
 });
 });
