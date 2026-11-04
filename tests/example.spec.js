@@ -99,7 +99,7 @@ test("login button submits with Enter", async function({ page }) {
 });
 test("login submits when pressing Enter in password field", async function({ page }) {        
         const loginPage = new LoginPage(page);
-        
+
             await loginPage.usernameInput.fill(users.standard.username);
             await loginPage.passwordInput.fill(users.standard.password);
 
@@ -164,5 +164,16 @@ test("no input", async function ({ page }) {
     await loginPage.login("", "");
 
     await expectLoginError(loginPage, "Epic sadface: Username is required")
+});
+test("locked out user cannot log in", async function({ page}) {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.login(users.lockedOut.username, users.lockedOut.password);
+
+    await expectLoginError(loginPage,
+        "Epic sadface: Sorry, this user has been locked out.")
+
+     await expect(page).toHaveURL("https://www.saucedemo.com/");
+
 });
 });
