@@ -176,4 +176,16 @@ test("locked out user cannot log in", async function({ page}) {
      await expect(page).toHaveURL("https://www.saucedemo.com/");
 
 });
+test.describe("Inventory", function() {
+    
+test("inventory page displays products", async function({ page }) {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.login(users.standard.username, users.standard.password);
+
+    await expect(page).toHaveURL("https://www.saucedemo.com/inventory.html");
+
+    await expect(page.getByText("Sauce Labs Backpack")).toBeVisible();
+});
+});
 });
