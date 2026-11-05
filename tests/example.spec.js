@@ -187,5 +187,15 @@ test("inventory page displays products", async function({ page }) {
 
     await expect(page.getByText("Sauce Labs Backpack")).toBeVisible();
 });
+test("user can add product to cart", async function({ page }) {
+
+    const loginPage = new LoginPage(page);
+
+    await loginPage.login(users.standard.username, users.standard.password);
+
+    const backpack = page.locator(".inventory_item").filter({ hasText: "Sauce Labs Backpack" });
+
+    await backpack.getByRole("button", { name: "Add to cart" }).click();
+});
 });
 });
