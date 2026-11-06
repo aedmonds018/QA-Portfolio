@@ -176,6 +176,7 @@ test("locked out user cannot log in", async function({ page}) {
      await expect(page).toHaveURL("https://www.saucedemo.com/");
 
 });
+});
 test.describe("Inventory", function() {
     
 test("inventory page displays products", async function({ page }) {
@@ -196,6 +197,27 @@ test("user can add product to cart", async function({ page }) {
     const backpack = page.locator(".inventory_item").filter({ hasText: "Sauce Labs Backpack" });
 
     await backpack.getByRole("button", { name: "Add to cart" }).click();
+
+    await expect(page.locator(".shopping_cart_badge")).toHaveText("1");
 });
+test("verifying the correct product was added", async function({ page }) {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.login(users.standard.username, users.standard.password);
+
+    const backpack = page.locator(".inventory_item").filter({
+        hasText: "Sauce Labs Backpack"
+    });
+
+    await backpack.getByRole("button", { name: "Add to cart" }).click();
+
+    await expect(page.locator(".shopping_cart_badge")).toHaveText("1");
+
+    await page.locator(".shopping_cart_link").click();
+
+    await expect(page).toHaveURL("https://www.saucedemo.com/cart.html");
+
+    // Next: verify that the Backpack appears inside the cart.
+    await expect(page.getByText("Sauce Labs Backpack")).toBeVisible();
 });
 });
