@@ -203,21 +203,35 @@ test("user can add product to cart", async function({ page }) {
 test("verifying the correct product was added", async function({ page }) {
     const loginPage = new LoginPage(page);
 
+    // 1. Login
     await loginPage.login(users.standard.username, users.standard.password);
 
+    // 2. Find Backpack on the inventory page
     const backpack = page.locator(".inventory_item").filter({
         hasText: "Sauce Labs Backpack"
     });
 
+    // 3. Add Backpack to cart
     await backpack.getByRole("button", { name: "Add to cart" }).click();
 
+    // 4. Verify cart badge
     await expect(page.locator(".shopping_cart_badge")).toHaveText("1");
 
+    // 5. Open shopping cart
     await page.locator(".shopping_cart_link").click();
 
     await expect(page).toHaveURL("https://www.saucedemo.com/cart.html");
 
-    // Next: verify that the Backpack appears inside the cart.
-    await expect(page.getByText("Sauce Labs Backpack")).toBeVisible();
+    // 6. Find Backpack inside the cart
+    const cartBackpack = page.locator(".cart_item").filter({
+        hasText: "Sauce Labs Backpack"
+    });
+
+    // 7. Verify product details
+    await expect(cartBackpack.locator(".inventory_item_name")).toHaveText("Sauce Labs Backpack");
+
+    await expect(cartBackpack.locator(".cart_quantity")).toHaveText("1");
+
+    await expect(cartBackpack.locator(".inventory_item_price")).toHaveText("$29.99");
 });
 });
