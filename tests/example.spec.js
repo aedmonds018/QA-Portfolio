@@ -234,4 +234,28 @@ test("verifying the correct product was added", async function({ page }) {
 
     await expect(cartBackpack.locator(".inventory_item_price")).toHaveText("$29.99");
 });
+test("user can remove product from cart", async function({ page }) {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.login(users.standard.username, users.standard.password);
+
+        const backpack = page.locator(".inventory_item").filter({
+        hasText: "Sauce Labs Backpack"
+    });
+
+        await backpack.getByRole("button", { name: "Add to cart" }).click();
+
+        await page.locator(".shopping_cart_link").click();
+
+        await expect(page).toHaveURL("https://www.saucedemo.com/cart.html");
+
+            const cartBackpack = page.locator(".cart_item").filter({
+        hasText: "Sauce Labs Backpack"
+    });
+
+            await cartBackpack.getByRole("button", { name: "Remove" }).click();
+
+            await expect(cartBackpack).toHaveCount(0);
+
+});
 });
